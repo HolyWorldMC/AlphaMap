@@ -10,6 +10,10 @@ public record Waypoint(double x, double y, double z, String name, int colour, bo
         return new Waypoint(x, y, z, newName, colour, worldHidden);
     }
 
+    public Waypoint moved(double newX, double newY, double newZ) {
+        return new Waypoint(newX, newY, newZ, name, colour, worldHidden);
+    }
+
     public Waypoint coloured(int newColour) {
         return new Waypoint(x, y, z, name, newColour, worldHidden);
     }

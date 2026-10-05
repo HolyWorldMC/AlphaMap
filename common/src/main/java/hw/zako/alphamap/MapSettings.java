@@ -26,6 +26,9 @@ public final class MapSettings {
     public static final int MIN_MINIMAP_BLOCKS = 32;
     public static final int MAX_MINIMAP_BLOCKS = 512;
     public static final int MAX_MINIMAP_ZOOM = 4;
+    public static final int MIN_HEADING_SPAN = 20;
+    public static final int MAX_HEADING_SPAN = 90;
+    public static final int MAX_HEADING_OFFSET = 100;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
@@ -113,6 +116,30 @@ public final class MapSettings {
     boolean compass = false;
 
     @NonFinal
+    boolean headingCompass = false;
+
+    @NonFinal
+    double headingScale = 1.0;
+
+    @NonFinal
+    double headingOpacity = 1.0;
+
+    @NonFinal
+    int headingSpan = 45;
+
+    @NonFinal
+    int headingOffset = 0;
+
+    @NonFinal
+    boolean headingDegrees = true;
+
+    @NonFinal
+    boolean headingBearing = true;
+
+    @NonFinal
+    boolean headingEverywhere = false;
+
+    @NonFinal
     SelfShape selfShape = SelfShape.CROSS;
 
     @NonFinal
@@ -186,6 +213,10 @@ public final class MapSettings {
         minimapBlocks = Math.clamp(minimapBlocks, MIN_MINIMAP_BLOCKS, MAX_MINIMAP_BLOCKS);
         minimapX = Math.clamp(minimapX, 0.0, 1.0);
         minimapY = Math.clamp(minimapY, 0.0, 1.0);
+        headingScale = Math.clamp(headingScale, MIN_SCALE, MAX_SCALE);
+        headingOpacity = Math.clamp(headingOpacity, 0.1, 1.0);
+        headingSpan = Math.clamp(headingSpan, MIN_HEADING_SPAN, MAX_HEADING_SPAN);
+        headingOffset = Math.clamp(headingOffset, 0, MAX_HEADING_OFFSET);
         write(file(), this);
     }
 
@@ -320,6 +351,70 @@ public final class MapSettings {
 
     public void compass(boolean value) {
         compass = value;
+    }
+
+    public boolean headingCompass() {
+        return headingCompass;
+    }
+
+    public void headingCompass(boolean value) {
+        headingCompass = value;
+    }
+
+    public double headingScale() {
+        return headingScale;
+    }
+
+    public void headingScale(double value) {
+        headingScale = value;
+    }
+
+    public double headingOpacity() {
+        return headingOpacity;
+    }
+
+    public void headingOpacity(double value) {
+        headingOpacity = value;
+    }
+
+    public int headingSpan() {
+        return headingSpan;
+    }
+
+    public void headingSpan(int value) {
+        headingSpan = value;
+    }
+
+    public int headingOffset() {
+        return headingOffset;
+    }
+
+    public void headingOffset(int value) {
+        headingOffset = value;
+    }
+
+    public boolean headingDegrees() {
+        return headingDegrees;
+    }
+
+    public void headingDegrees(boolean value) {
+        headingDegrees = value;
+    }
+
+    public boolean headingBearing() {
+        return headingBearing;
+    }
+
+    public void headingBearing(boolean value) {
+        headingBearing = value;
+    }
+
+    public boolean headingEverywhere() {
+        return headingEverywhere;
+    }
+
+    public void headingEverywhere(boolean value) {
+        headingEverywhere = value;
     }
 
     public boolean worldWaypoints() {

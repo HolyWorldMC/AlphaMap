@@ -55,6 +55,9 @@ public final class MapOverlay {
 
         MapInput.update(client, true);
         MapInput.viewport(left, top, side, geometry.visiblePixels());
+        MapInput.centre(
+                (geometry.pixelX(client.player.getX()) - geometry.visibleOriginPixel()) / geometry.visiblePixels(),
+                (geometry.pixelZ(client.player.getZ()) - geometry.visibleOriginPixel()) / geometry.visiblePixels());
         MapInput.mouse(client);
 
         int alpha = settings.alpha();

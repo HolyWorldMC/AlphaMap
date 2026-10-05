@@ -14,11 +14,14 @@ public abstract class WaypointScreenBase extends Screen {
     private static final int DELETE = 0xFF5555;
     private static final int REMOVE = 70;
     private static final int COLUMN_GAP = 4;
+    private static final int LABEL = 10;
+    private static final String[] AXES = {"X", "Y", "Z"};
 
     private final int index;
     private final @Nullable Screen parent;
 
     private EditBox name;
+    private final EditBox[] coords = new EditBox[3];
     private int colour;
 
     protected WaypointScreenBase(int index, @Nullable Screen parent) {
@@ -39,6 +42,19 @@ public abstract class WaypointScreenBase extends Screen {
         name.setValue(waypoint.name());
         name.setResponder(text -> Waypoints.replace(index, current().renamed(text)));
         addRenderableWidget(name);
+
+        int column = (WIDTH - 2 * COLUMN_GAP) / 3;
+        double[] values = {Math.floor(waypoint.x()), Math.floor(waypoint.y()), Math.floor(waypoint.z())};
+        for (int i = 0; i < 3; i++) {
+            EditBox box = new EditBox(font, x + i * (column + COLUMN_GAP) + LABEL, y + 28,
+                    column - LABEL, HEIGHT, Component.literal(AXES[i]));
+            box.setMaxLength(9);
+            box.setValue(String.valueOf((long) values[i]));
+            box.setResponder(text -> move());
+            coords[i] = box;
+            addRenderableWidget(box);
+        }
+        y += 28;
 
         int palette = Waypoints.PALETTE.length;
         int paletteWidth = palette * SWATCH;
@@ -68,6 +84,16 @@ public abstract class WaypointScreenBase extends Screen {
         setInitialFocus(done);
     }
 
+    private void move() {
+        try {
+            long blockX = Long.parseLong(coords[0].getValue());
+            long blockY = Long.parseLong(coords[1].getValue());
+            long blockZ = Long.parseLong(coords[2].getValue());
+            Waypoints.replace(index, current().moved(blockX + 0.5, blockY, blockZ + 0.5));
+        } catch (NumberFormatException ignored) {
+        }
+    }
+
     private Component world() {
         return Component.translatable(current().worldHidden()
                 ? "alphamap.waypoints.world.off"
@@ -81,7 +107,7 @@ public abstract class WaypointScreenBase extends Screen {
     protected void paint(Canvas canvas) {
         int palette = Waypoints.PALETTE.length;
         int paletteX = (width - palette * SWATCH) / 2;
-        int y = height / 3 + 28;
+        int y = height / 3 + 56;
         for (int i = 0; i < palette; i++) {
             int swatch = Waypoints.PALETTE[i];
             int left = paletteX + i * SWATCH;
@@ -90,6 +116,10 @@ public abstract class WaypointScreenBase extends Screen {
                 canvas.fill(left + 1, y + 1, left + SWATCH - 3, y + 2, 0xFFFFFFFF);
                 canvas.fill(left + 1, y + SWATCH - 4, left + SWATCH - 3, y + SWATCH - 3, 0xFFFFFFFF);
             }
+        }
+        int column = (WIDTH - 2 * COLUMN_GAP) / 3;
+        for (int i = 0; i < 3; i++) {
+            canvas.text(font, AXES[i], (width - WIDTH) / 2 + i * (column + COLUMN_GAP), height / 3 + 34, 0xFFFFFFFF);
         }
         canvas.centered(font, title, width / 2, height / 3 - 24, 0xFFFFFFFF);
     }

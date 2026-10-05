@@ -1,5 +1,6 @@
 package hw.zako.alphamap;
 
+import hw.zako.alphamap.mixin.BossHealthOverlayAccessor;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -25,6 +26,10 @@ public class Vanilla {
 
     public boolean hudHidden(Minecraft client) {
         return client.options.hideGui;
+    }
+
+    public int bossBars(Minecraft client) {
+        return ((BossHealthOverlayAccessor) client.gui.getBossOverlay()).alphamap$events().size();
     }
 
     public @Nullable String mobId(Entity entity) {

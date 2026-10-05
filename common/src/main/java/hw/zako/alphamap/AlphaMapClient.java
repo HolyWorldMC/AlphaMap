@@ -40,6 +40,7 @@ public final class AlphaMapClient implements ClientModInitializer {
         return OPEN_MAP.isDown() || pinned();
     }
     private static final Identifier WAYPOINTS = Identifier.fromNamespaceAndPath("alphamap", "waypoints");
+    private static final Identifier COMPASS = Identifier.fromNamespaceAndPath("alphamap", "compass");
     private static final Identifier MINIMAP = Identifier.fromNamespaceAndPath("alphamap", "minimap");
 
     private static MinimapOverlay minimap;
@@ -83,6 +84,7 @@ public final class AlphaMapClient implements ClientModInitializer {
 
         minimap = new MinimapOverlay(atlas, settings);
 
+        HudElementRegistry.attachElementAfter(VanillaHudElements.BOSS_BAR, COMPASS, new CompassHud());
         HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, MINIMAP, new MinimapHud(minimap));
         HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, WAYPOINTS, new WaypointHud(new WaypointOverlay(atlas, settings)));
         HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, OVERLAY, new MapHud(new MapOverlay(atlas, settings)));

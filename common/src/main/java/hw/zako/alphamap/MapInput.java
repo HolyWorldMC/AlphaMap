@@ -33,6 +33,7 @@ public class MapInput {
 
     private double focusX = 0.5;
     private double focusY = 0.5;
+    private boolean recentre = true;
 
     private int viewLeft;
     private int viewTop;
@@ -103,7 +104,15 @@ public class MapInput {
         return Math.clamp(viewPixels * MAX_MAGNIFICATION / viewSide, MIN_ZOOM, ZOOM_CEILING);
     }
 
+    public void centre(double x, double y) {
+        if (!recentre) return;
+        recentre = false;
+        focusX = clampFocus(x);
+        focusY = clampFocus(y);
+    }
+
     public void update(Minecraft client, boolean mapOpen) {
+        if (!mapOpen) recentre = true;
         boolean use = client.options.keyUse.isDown();
         boolean asked = use || tool == MapTool.PENCIL;
         if (mapOpen && Vanilla.screen(client) == null && asked) {
@@ -180,9 +189,7 @@ public class MapInput {
         useHeld = false;
         usePressed = false;
         useSwallowed = false;
-        zoom = MIN_ZOOM;
-        focusX = 0.5;
-        focusY = 0.5;
+        recentre = true;
         tool = MapTool.PAN;
     }
 

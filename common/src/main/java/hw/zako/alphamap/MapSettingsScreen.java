@@ -159,6 +159,11 @@ public final class MapSettingsScreen extends Screen {
             button.setMessage(waypoints(settings));
         }).bounds(right, top + GAP * 5, WIDTH, HEIGHT).build());
 
+        addRenderableWidget(Button.builder(Component.translatable("alphamap.settings.heading"),
+                        button -> Vanilla.setScreen(minecraft, new CompassSettingsScreen(this)))
+                .bounds(right, top + GAP * 6, WIDTH, HEIGHT)
+                .build());
+
         addRenderableWidget(Button.builder(Component.translatable("gui.done"), button -> onClose())
                 .bounds((width - WIDTH) / 2, top + GAP * 7, WIDTH, HEIGHT)
                 .build());

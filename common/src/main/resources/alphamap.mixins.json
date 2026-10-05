@@ -4,6 +4,7 @@
   "package": "hw.zako.alphamap.mixin",
   "compatibilityLevel": "JAVA_${java_version}",
   "client": [
+    "BossHealthOverlayAccessor",
     "ClientLevelMixin",
     "EntityRenderDispatcherAccessor",
     "MinecraftMixin",
